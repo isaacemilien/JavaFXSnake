@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import java.util.HashMap;
 
 
 public class Main extends Application {
@@ -20,21 +21,46 @@ public class Main extends Application {
     // Create player
     Rectangle player = new Rectangle(560, 560, 40, 40);
 
+    // Last movement key pressed
+    MovementKeys movementKey = MovementKeys.UP;
+
+    // Pair movement direction and translation value
+    HashMap<MovementKeys, Double[]> directionValues = new HashMap<>();
+
+    void pairDirectionValues(){
+        directionValues.put(movementKey.UP, new Double[] {0.0, -40.0});
+        directionValues.put(movementKey.LEFT, new Double[] {-40.0, 0.0});
+        directionValues.put(movementKey.DOWN, new Double[] {0.0, 40.0});
+        directionValues.put(movementKey.RIGHT, new Double[] {40.0, 0.0});
+    }
+
     // Capture input
     void processInput(){
         scene.setOnKeyPressed(e -> {
+            // Save what movement key last pressed
             switch (e.getCode()) {
+                // Up
                 case W:
                     System.out.println("W pressed");
+                    movementKey = MovementKeys.UP;
                     break;
+
+                // Left
                 case A:
                     System.out.println("A pressed");
+                    movementKey = MovementKeys.LEFT;
                     break;
+
+                // Down
                 case S:
                     System.out.println("S pressed");
+                    movementKey = MovementKeys.DOWN;
                     break;
+
+                // Right
                 case D:
                     System.out.println("D pressed");
+                    movementKey = MovementKeys.RIGHT;
                     break;
             } 
         });
@@ -42,24 +68,19 @@ public class Main extends Application {
 
     private void update(){
         // Move player
-        
-        // Down
-        player.setY(player.getY() + 40);
-        // Up
-        player.setY(player.getY() - 40);
-        // Left
-        player.setX(player.getX() - 40);
-        // Right
-        player.setX(player.getX() + 40);
-
+        player.setX(player.getX() + directionValues.get(movementKey)[0]);
+        player.setY(player.getY() + directionValues.get(movementKey)[1]);
     }
 
-
     private void initialize(){
+        // Set window size
         root.setPrefSize(HEIGHT, WIDTH);
 
         // Draw player
         root.getChildren().add(player);
+
+        // Initialize direction value pairs
+        pairDirectionValues();
 
         // Game loop
         AnimationTimer timer = new AnimationTimer() {
@@ -85,7 +106,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         initialize();
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Snake");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
