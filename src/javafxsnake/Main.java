@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+
 
 public class Main extends Application {
     
@@ -14,28 +17,8 @@ public class Main extends Application {
     private Pane root = new Pane();
     Scene scene = new Scene(root);
 
-    
-    private void initialize(){
-        root.setPrefSize(HEIGHT, WIDTH);
-
-        // Game loop
-        AnimationTimer timer = new AnimationTimer() {
-            private long lastUpdate = 0;
-
-            @Override
-            public void handle(long now){
-                // Cap frames
-                if (now - lastUpdate >= 128_000_000) {
-                    
-                    processInput();
-
-                    lastUpdate = now;
-                }
-            }
-        };
-
-        timer.start();
-    }
+    // Create player
+    Rectangle player = new Rectangle(560, 560, 40, 40);
 
     // Capture input
     void processInput(){
@@ -55,6 +38,47 @@ public class Main extends Application {
                     break;
             } 
         });
+    }
+
+    private void update(){
+        // Move player
+        
+        // Down
+        player.setY(player.getY() + 40);
+        // Up
+        player.setY(player.getY() - 40);
+        // Left
+        player.setX(player.getX() - 40);
+        // Right
+        player.setX(player.getX() + 40);
+
+    }
+
+
+    private void initialize(){
+        root.setPrefSize(HEIGHT, WIDTH);
+
+        // Draw player
+        root.getChildren().add(player);
+
+        // Game loop
+        AnimationTimer timer = new AnimationTimer() {
+            private long lastUpdate = 0;
+
+            @Override
+            public void handle(long now){
+                // Cap frames
+                if (now - lastUpdate >= 128_000_000) {
+                    
+                    processInput();
+                    update();
+
+                    lastUpdate = now;
+                }
+            }
+        };
+
+        timer.start();
     }
 
     @Override
