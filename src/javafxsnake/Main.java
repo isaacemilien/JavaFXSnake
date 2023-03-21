@@ -19,10 +19,10 @@ public class Main extends Application {
     Scene scene = new Scene(root);
 
     // Create player
-    Rectangle player = new Rectangle(560, 560, 40, 40);
+    Rectangle player = new Rectangle(280, 280, 40, 40);
 
     // Last movement key pressed
-    MovementKeys movementKey = MovementKeys.UP;
+    MovementKeys movementKey = MovementKeys.DOWN;
 
     // Pair movement direction and translation value
     HashMap<MovementKeys, Double[]> directionValues = new HashMap<>();
@@ -70,6 +70,15 @@ public class Main extends Application {
         // Move player
         player.setX(player.getX() + directionValues.get(movementKey)[0]);
         player.setY(player.getY() + directionValues.get(movementKey)[1]);
+
+        // Detect when player out of bounds
+        if(player.getX() < 0 || player.getX() > WIDTH || player.getY() < 0 || player.getY() > HEIGHT){
+            System.out.println("Out of bounds");
+
+            // Reset player position
+            player.setX(280); 
+            player.setY(280); 
+        }
     }
 
     private void initialize(){
