@@ -1,16 +1,23 @@
 package javafxsnake;
 
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import java.util.HashMap;
 
 public class Player extends Sprite{
 
     public Color playerColour;
-    int bodyElements = 4;
+    int bodyElements = 20;
     int playerLength = 0;
     
     public Sprite[] bodies = new Sprite[3];
     public double[][] lastPositions = new double[bodyElements][2];
+    MovementKeys movementKey = MovementKeys.UP; 
+
+    // Pair movement direction and translation value
+    public HashMap<MovementKeys, Double[]> directionValues = new HashMap<>();
+
+    boolean directionFeasible = true;
+    MovementKeys[][] movementConflicts = {{MovementKeys.UP, MovementKeys.DOWN}, {MovementKeys.DOWN, MovementKeys.UP}, {MovementKeys.LEFT, MovementKeys.RIGHT}, {MovementKeys.RIGHT, MovementKeys.LEFT}};
 
     Player(double x, double y, double height, double width, Color playerColour){
         super(x, y, height, width, playerColour);
@@ -18,6 +25,9 @@ public class Player extends Sprite{
         this.playerColour = playerColour;
 
         bodies = initializeBodies(bodyElements);
+
+        // Pair movement direction and translation value
+        pairDirectionValues();
     }
 
     Sprite[] initializeBodies(int bodyElements){
@@ -49,15 +59,29 @@ public class Player extends Sprite{
         }
     }
 
-    public void movePlayer(Double x, Double y){
-        this.setX(this.getX() + x);
-        this.setY(this.getY() + y);
+    public void movePlayer(MovementKeys movementKey){
+
+        for(int i = 0; i < movementConflicts.length; i++){
+            if(movementKey == movementConflicts[i][0] && this.movementKey == movementConflicts[i][1]){
+                directionFeasible = false;
+                break;
+            }
+
+            directionFeasible = true;
+        }
+
+        if(directionFeasible){
+            this.movementKey = movementKey;
+        }
+
+        this.setX(this.getX() + directionValues.get(this.movementKey)[0]);
+        this.setY(this.getY() + directionValues.get(this.movementKey)[1]);
     }
 
-    public void move(Double x, Double y){
+    public void move(MovementKeys movementKey){
         saveLastPositions();
         moveBodies();
-        movePlayer(x, y);
+        movePlayer(movementKey);
     }
 
     public void kill(){
@@ -72,6 +96,13 @@ public class Player extends Sprite{
         for(int i = 0; i < bodies.length; i++){
             bodies[i].setFill(Color.TRANSPARENT);
         }
+    }
+
+    void pairDirectionValues(){
+        directionValues.put(MovementKeys.UP, new Double[] {0.0, -40.0});
+        directionValues.put(MovementKeys.LEFT, new Double[] {-40.0, 0.0});
+        directionValues.put(MovementKeys.DOWN, new Double[] {0.0, 40.0});
+        directionValues.put(MovementKeys.RIGHT, new Double[] {40.0, 0.0});
     }
 
 }

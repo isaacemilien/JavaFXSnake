@@ -15,17 +15,6 @@ import javax.xml.transform.Templates;
 
 public class Main extends Application {
 
-    // Run into self
-    // head position
-    // body position
-    // are they same?
-
-    // what is there multiple of? 
-    // body positions
-
-    // Death
-    // Turn each body colour transparent
-
     // Window parameters
     final int WIDTH = 600, HEIGHT = WIDTH;
     private Pane root = new Pane();
@@ -46,16 +35,6 @@ public class Main extends Application {
 
     // Last movement key pressed
     MovementKeys movementKey = MovementKeys.DOWN;
-
-    // Pair movement direction and translation value
-    HashMap<MovementKeys, Double[]> directionValues = new HashMap<>();
-
-    void pairDirectionValues(){
-        directionValues.put(movementKey.UP, new Double[] {0.0, -40.0});
-        directionValues.put(movementKey.LEFT, new Double[] {-40.0, 0.0});
-        directionValues.put(movementKey.DOWN, new Double[] {0.0, 40.0});
-        directionValues.put(movementKey.RIGHT, new Double[] {40.0, 0.0});
-    }
 
     // Capture input
     void processInput(){
@@ -90,8 +69,6 @@ public class Main extends Application {
     }
 
     private void update(){
-
-
         // Cycle through all player bodies
         for(int i = 0; i < player.bodies.length; i++){
 
@@ -118,7 +95,7 @@ public class Main extends Application {
         }
 
         // Move player
-        player.move(directionValues.get(movementKey)[0], directionValues.get(movementKey)[1]);
+        player.move(movementKey);
 
         // Detect when player out of bounds
         if(player.getX() < 0 || player.getX() > WIDTH || player.getY() < 0 || player.getY() > HEIGHT){
@@ -145,9 +122,6 @@ public class Main extends Application {
 
         // Draw body
         root.getChildren().addAll(player.bodies);
-
-        // Initialize direction value pairs
-        pairDirectionValues();
 
         // Game loop
         AnimationTimer timer = new AnimationTimer() {
