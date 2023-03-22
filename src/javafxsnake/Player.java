@@ -1,25 +1,30 @@
 package javafxsnake;
 
 import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
 
-public class Player extends Rectangle{
+public class Player extends Sprite{
 
-    int bodyElements = 3;
+    public Color playerColour;
+    int bodyElements = 10;
+    int playerLength = 0;
     
-    public Rectangle[] bodies = new Rectangle[3];
+    public Sprite[] bodies = new Sprite[3];
     public double[][] lastPositions = new double[bodyElements][2];
 
-    Player(double x, double y, double height, double width){
-        super(x, y, height, width);
+    Player(double x, double y, double height, double width, Color playerColour){
+        super(x, y, height, width, playerColour);
+
+        this.playerColour = playerColour;
 
         bodies = initializeBodies(bodyElements);
     }
 
-    Rectangle[] initializeBodies(int bodyElements){
-        Rectangle[] bodies = new Rectangle[bodyElements];
+    Sprite[] initializeBodies(int bodyElements){
+        Sprite[] bodies = new Sprite[bodyElements];
 
         for(int i = 0; i < bodyElements; i++){
-            bodies[i] = new Rectangle(280, 240, 40, 40);
+            bodies[i] = new Sprite(280, 240, 40, 40, Color.TRANSPARENT);
         }
 
         return bodies;

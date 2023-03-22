@@ -15,7 +15,6 @@ import javax.xml.transform.Templates;
 
 public class Main extends Application {
 
-    // Snake growing
     // Run into self
     // Death
 
@@ -34,11 +33,8 @@ public class Main extends Application {
         return (random.nextInt((14 - 1) + 1) + 1) * 40;
     }
 
-
-
-
     // Create player
-    Player player = new Player(280, 280, 40, 40);
+    Player player = new Player(280, 280, 40, 40, Color.BLUE);
 
     // Last movement key pressed
     MovementKeys movementKey = MovementKeys.DOWN;
@@ -95,6 +91,10 @@ public class Main extends Application {
             // Give food random position
             food.setX(generateRandomPosition());
             food.setY(generateRandomPosition());
+
+            // Make first body piece visible
+            player.bodies[player.playerLength].setFill(player.playerColour);
+            player.playerLength++;
         }
 
         // Move player
@@ -120,7 +120,6 @@ public class Main extends Application {
 
         // Draw food
         root.getChildren().add(food);
-
         
         // Draw player
         root.getChildren().add(player);
