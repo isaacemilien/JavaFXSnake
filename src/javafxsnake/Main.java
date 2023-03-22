@@ -20,24 +20,7 @@ public class Main extends Application {
     Scene scene = new Scene(root);
 
     // Create player
-    Rectangle player = new Rectangle(280, 280, 40, 40);
-
-    // Create snake body
-    // Initialize new bodies
-    Rectangle[] initializeBodies(int bodyElements){
-        Rectangle[] tempBodies = new Rectangle[bodyElements];
-
-        for(int i = 0; i < bodyElements; i++){
-            tempBodies[i] = new Rectangle(280, 240, 40, 40);
-        }
-
-        return tempBodies;
-    }
-    
-    Rectangle[] bodies = new Rectangle[3];
-
-    // Last positions
-    Double[][] lastPositions = {new Double[] {0.0, 0.0}, new Double[] {0.0, 0.0}, new Double[] {0.0, 0.0}}; 
+    Player player = new Player(280, 280, 40, 40);
 
     // Last movement key pressed
     MovementKeys movementKey = MovementKeys.DOWN;
@@ -85,27 +68,8 @@ public class Main extends Application {
     }
 
     private void update(){
-        // Save last positions
-
-        for(int i = lastPositions.length - 1; i > -1; i--){
-            if(i == 0){
-                lastPositions[i][0] = player.getX();
-                lastPositions[i][1] = player.getY();
-            }else{
-                lastPositions[i][0] = lastPositions[i-1][0];
-                lastPositions[i][1] = lastPositions[i-1][1];
-            }
-        }
-
-        // Move body
-        for(int i = 0; i < bodies.length; i++){
-            bodies[i].setX(lastPositions[i][0]);
-            bodies[i].setY(lastPositions[i][1]);
-        }
-
         // Move player
-        player.setX(player.getX() + directionValues.get(movementKey)[0]);
-        player.setY(player.getY() + directionValues.get(movementKey)[1]);
+        player.move(directionValues.get(movementKey)[0], directionValues.get(movementKey)[1]);
 
         // Detect when player out of bounds
         if(player.getX() < 0 || player.getX() > WIDTH || player.getY() < 0 || player.getY() > HEIGHT){
@@ -124,11 +88,8 @@ public class Main extends Application {
         // Draw player
         root.getChildren().add(player);
 
-        // Initilize body
-        bodies = initializeBodies(3);
-
         // Draw body
-        root.getChildren().addAll(bodies);
+        root.getChildren().addAll(player.bodies);
 
         // Initialize direction value pairs
         pairDirectionValues();
