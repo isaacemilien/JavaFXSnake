@@ -1,7 +1,6 @@
 package javafxsnake;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
@@ -10,16 +9,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
 
+import javax.xml.transform.Templates;
+
 
 public class Main extends Application {
-    
+
     // Window parameters
     final int WIDTH = 600, HEIGHT = WIDTH;
     private Pane root = new Pane();
     Scene scene = new Scene(root);
 
     // Create player
-    Rectangle player = new Rectangle(280, 280, 40, 40);
+    Player player = new Player(280, 280, 40, 40);
 
     // Last movement key pressed
     MovementKeys movementKey = MovementKeys.DOWN;
@@ -68,8 +69,7 @@ public class Main extends Application {
 
     private void update(){
         // Move player
-        player.setX(player.getX() + directionValues.get(movementKey)[0]);
-        player.setY(player.getY() + directionValues.get(movementKey)[1]);
+        player.move(directionValues.get(movementKey)[0], directionValues.get(movementKey)[1]);
 
         // Detect when player out of bounds
         if(player.getX() < 0 || player.getX() > WIDTH || player.getY() < 0 || player.getY() > HEIGHT){
@@ -87,6 +87,9 @@ public class Main extends Application {
 
         // Draw player
         root.getChildren().add(player);
+
+        // Draw body
+        root.getChildren().addAll(player.bodies);
 
         // Initialize direction value pairs
         pairDirectionValues();
