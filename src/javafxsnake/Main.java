@@ -16,7 +16,15 @@ import javax.xml.transform.Templates;
 public class Main extends Application {
 
     // Run into self
+    // head position
+    // body position
+    // are they same?
+
+    // what is there multiple of? 
+    // body positions
+
     // Death
+    // Turn each body colour transparent
 
     // Window parameters
     final int WIDTH = 600, HEIGHT = WIDTH;
@@ -83,6 +91,18 @@ public class Main extends Application {
 
     private void update(){
 
+
+        // Cycle through all player bodies
+        for(int i = 0; i < player.bodies.length; i++){
+
+            // Check if player head and body collide
+            if(player.getX() == player.bodies[i].getX() && player.getY() == player.bodies[i].getY() && player.bodies[i].getFill() == player.playerColour){
+
+                // Kill player
+                player.kill();
+            }
+        }
+
         // Detect player head on food
         if(player.getX() == food.getX() && player.getY() == food.getY()){
 
@@ -104,9 +124,8 @@ public class Main extends Application {
         if(player.getX() < 0 || player.getX() > WIDTH || player.getY() < 0 || player.getY() > HEIGHT){
             System.out.println("Out of bounds");
 
-            // Reset player position
-            player.setX(280); 
-            player.setY(280); 
+            // Kill player
+            player.kill();
         }
     }
 

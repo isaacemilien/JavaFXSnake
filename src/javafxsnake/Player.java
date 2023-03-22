@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 public class Player extends Sprite{
 
     public Color playerColour;
-    int bodyElements = 10;
+    int bodyElements = 4;
     int playerLength = 0;
     
     public Sprite[] bodies = new Sprite[3];
@@ -58,6 +58,20 @@ public class Player extends Sprite{
         saveLastPositions();
         moveBodies();
         movePlayer(x, y);
+    }
+
+    public void kill(){
+        // Reset player length count
+        playerLength = 0;
+        
+        // Reset player position
+        this.setX(280); 
+        this.setY(280); 
+
+        // Remove player bodies color
+        for(int i = 0; i < bodies.length; i++){
+            bodies[i].setFill(Color.TRANSPARENT);
+        }
     }
 
 }
