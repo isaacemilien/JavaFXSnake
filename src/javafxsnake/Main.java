@@ -1,7 +1,6 @@
 package javafxsnake;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
@@ -9,6 +8,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import java.util.HashMap;
+
+import javax.xml.transform.Templates;
 
 
 public class Main extends Application {
@@ -22,11 +23,18 @@ public class Main extends Application {
     Rectangle player = new Rectangle(280, 280, 40, 40);
 
     // Create snake body
-    Rectangle body1 = new Rectangle(280, 240, 40, 40);
-    Rectangle body2 = new Rectangle(280, 240, 40, 40);
-    Rectangle body3 = new Rectangle(280, 240, 40, 40);
+    // Initialize new bodies
+    Rectangle[] initializeBodies(int bodyElements){
+        Rectangle[] tempBodies = new Rectangle[bodyElements];
+
+        for(int i = 0; i < bodyElements; i++){
+            tempBodies[i] = new Rectangle(280, 240, 40, 40);
+        }
+
+        return tempBodies;
+    }
     
-    Rectangle[] bodies = {body1, body2, body3};
+    Rectangle[] bodies = new Rectangle[3];
 
     // Last positions
     Double[][] lastPositions = {new Double[] {0.0, 0.0}, new Double[] {0.0, 0.0}, new Double[] {0.0, 0.0}}; 
@@ -116,10 +124,11 @@ public class Main extends Application {
         // Draw player
         root.getChildren().add(player);
 
+        // Initilize body
+        bodies = initializeBodies(3);
+
         // Draw body
-        root.getChildren().add(body1);
-        root.getChildren().add(body2);
-        root.getChildren().add(body3);
+        root.getChildren().addAll(bodies);
 
         // Initialize direction value pairs
         pairDirectionValues();
